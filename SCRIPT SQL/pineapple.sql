@@ -60,7 +60,7 @@ INSERT INTO Cliente (DNI, Nombre, Apellido, Mail, Direccion, C_Postal, Telefono)
     (34567890, 'Carlos', 'Gomez', 'carlos.gomez@email.com', 'Calle Principal 789', 67890, 777777777),
     (45678901, 'Laura', 'Martinez', 'laura.martinez@email.com', 'Avenida Secundaria 012', 9876, 888888888),
     (56789012, 'Pedro', 'Rodriguez', 'pedro.rodriguez@email.com', 'Calle Principal 234', 23456, 999999999),
-    (123456789, 'Juan', 'Pérez', 'juan@example.com', 'Calle Principal 123', 12345, 987654321);
+    (23456789, 'Juan', 'Pérez', 'juan@example.com', 'Calle Principal 123', 12345, 987654321);
 
 --MEDIOS DE PAGO--
 INSERT INTO Medios_de_pago (ID_PAGO, Tipo_pago) VALUES
