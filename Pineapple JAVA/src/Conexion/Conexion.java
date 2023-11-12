@@ -1,8 +1,5 @@
 package Conexion;
 
-
-
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -10,11 +7,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
-
-
 public class Conexion {
-    
     String bd = "pineapple";
     String url = "jdbc:mysql://localhost:3306/";
     String user="root";   
@@ -22,13 +15,9 @@ public class Conexion {
     String driver= "com.mysql.cj.jdbc.Driver";
     Connection cx;
 
-
-
-
     public Conexion(String bd) {
         this.bd=bd;
     }
-    
     public Connection Conectar() {
         try {
             Class.forName(driver);
@@ -47,8 +36,7 @@ public class Conexion {
             System.out.println("Se desconecto");
         } catch (SQLException ex) {
             Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
-        }
-       
+        } 
    }
    
    public static void main(String[] args) {
@@ -56,9 +44,6 @@ public class Conexion {
        conexion.Conectar();
        
    }
-
-
-
 
    /*public void funcion(){
        try{
@@ -69,8 +54,4 @@ public class Conexion {
     public PreparedStatement prepareStatement(String string) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-
-
-
-
 }
