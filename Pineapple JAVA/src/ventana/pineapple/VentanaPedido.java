@@ -51,7 +51,7 @@ public class VentanaPedido extends JFrame {
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
             ImageIcon imagenFondo = new ImageIcon(
-                    "C:\\Users\\gabi\\Documents\\NetBeansProjects\\Pineapple JAVA\\src\\main\\java\\ventana\\pineapple\\images\\VentanaPedido.png");
+                    "C:\\Users\\Alumno\\Documents\\NetBeansProjects\\Pineapple JAVA\\src\\main\\java\\ventana\\pineapple\\images\\VentanaPedido.png");
             g.drawImage(imagenFondo.getImage(), 0, 0, getWidth(), getHeight(), this);
         }
     };
@@ -228,7 +228,7 @@ public class VentanaPedido extends JFrame {
         try {
             String query = "SELECT ID FROM Cliente WHERE DNI = ?";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
-                statement.setInt(1, 123456789); // Ejemplo: DNI fijo
+                statement.setInt(1, 123456789);
                 ResultSet resultSet = statement.executeQuery();
                 if (resultSet.next()) {
                     numeroCliente = resultSet.getInt("ID");

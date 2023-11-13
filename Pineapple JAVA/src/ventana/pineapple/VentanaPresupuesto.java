@@ -33,12 +33,12 @@ public class VentanaPresupuesto extends JFrame {
         // Establecer el estilo del texto
         StyleContext context = new StyleContext();
         Style style = context.addStyle("Estilo", null);
-        Font font = new Font("Arial", Font.PLAIN, 16); // Puedes cambiar la fuente y el tamaño
+        Font font = new Font("Arial", Font.PLAIN, 16);
         StyleConstants.setFontFamily(style, font.getFamily());
         StyleConstants.setFontSize(style, font.getSize());
 
-        textPane.setEditable(false); // Deshabilitar la edición
-        textPane.setBackground(panel.getBackground()); // Hacer el fondo transparente
+        textPane.setEditable(false);
+        textPane.setBackground(panel.getBackground());
         textPane.setCharacterAttributes(style, true);
 
         double costoTotal = 0.0;
@@ -60,7 +60,7 @@ public class VentanaPresupuesto extends JFrame {
         JButton rechazarPedidoButton = new JButton("Rechazar presupuesto");
         rechazarPedidoButton.addActionListener((ActionEvent e) -> {
             JOptionPane.showMessageDialog(VentanaPresupuesto.this, "Pedido cancelado con éxito");
-            dispose(); // Cierra la ventana
+            dispose();
         });
 
         panel.add(realizarPedidoButton);

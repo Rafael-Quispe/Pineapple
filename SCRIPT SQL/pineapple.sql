@@ -1,9 +1,8 @@
 DROP DATABASE IF EXISTS Pineapple;
 CREATE DATABASE Pineapple;
 USE pineapple;
- 
---CLIENTE--
-CREATE TABLE Cliente(
+
+CREATE TABLE Clientes(
     ID INT PRIMARY KEY AUTO_INCREMENT,
     DNI INT NOT NULL unique,
     Nombre VARCHAR(50),
@@ -14,13 +13,11 @@ CREATE TABLE Cliente(
     Telefono INT unique
 );
 
---MEDIOS DE PAGO--
 CREATE TABLE Medios_de_pago(
     ID_PAGO INT PRIMARY KEY,
     Tipo_pago VARCHAR (30)
 );
 
---PRODUCTOS--
 CREATE TABLE Productos(
     Numero_serie INT PRIMARY KEY,
     Tipo varchar (20),
@@ -29,10 +26,9 @@ CREATE TABLE Productos(
     Color VARCHAR(50),
     Almacenamiento VARCHAR(50),
     Fecha_Lanzamiento date,
-    Procesador varchar (10)  
+    Procesador varchar (10)
 );
 
---STOCK--
 CREATE TABLE Stock(
     COD_ST INT PRIMARY KEY,
     CANTIDAD_ST INT,
@@ -40,38 +36,35 @@ CREATE TABLE Stock(
     FOREIGN KEY (Num_serie_prod) REFERENCES Productos(Numero_serie)
 );
 
---PRESUPUESTOS--
-CREATE TABLE presupuestos(
+CREATE TABLE Presupuestos(
     nro_cli_comp INT,
     COD_ST_comp INT,
     ID_pago_comp INT,
     monto INT,
     fecha date,
     cantidad INT,
+    PRIMARY KEY (nro_cli_comp, COD_ST_comp),
     FOREIGN KEY (nro_cli_comp) REFERENCES Cliente(ID),
     FOREIGN KEY (COD_ST_comp) REFERENCES Stock(COD_ST),
     FOREIGN KEY (ID_pago_comp) REFERENCES Medios_de_pago(ID_PAGO)
 );
 
---CLIENTE--
 INSERT INTO Cliente (DNI, Nombre, Apellido, Mail, Direccion, C_Postal, Telefono) VALUES 
     (12345678, 'Juan', 'Perez', 'juan.perez@email.com', 'Calle Principal 123', 12345, 555555555),
     (23456789, 'Maria', 'Lopez', 'maria.lopez@email.com', 'Avenida Secundaria 456', 54321, 666666666),
     (34567890, 'Carlos', 'Gomez', 'carlos.gomez@email.com', 'Calle Principal 789', 67890, 777777777),
     (45678901, 'Laura', 'Martinez', 'laura.martinez@email.com', 'Avenida Secundaria 012', 9876, 888888888),
     (56789012, 'Pedro', 'Rodriguez', 'pedro.rodriguez@email.com', 'Calle Principal 234', 23456, 999999999),
-    (24356789, 'Juan', 'Pérez', 'juan@example.com', 'Calle Principal 123', 12345, 987654321);
+    (24356789, 'Juan', 'Perez', 'juan@example.com', 'Calle Principal 123', 12345, 987654321);
 
---MEDIOS DE PAGO--
 INSERT INTO Medios_de_pago (ID_PAGO, Tipo_pago) VALUES
-    (1, 'Tarjeta de crédito'),
-    (2, 'Tarjeta de débito'),
+    (1, 'Tarjeta de credito'),
+    (2, 'Tarjeta de debito'),
     (3, 'Efectivo'),
     (4, 'Transferencia bancaria'),
     (5, 'Cheque'),
     (6, 'PayPal');
 
---PRODUCTOS--
 INSERT INTO Productos (Numero_serie, Tipo, Modelo, Precio, Color, Almacenamiento, Fecha_Lanzamiento, Procesador) VALUES
     (8319131, 'Celular', 'PinePhone', 199, 'Negro', '64GB', '2022-05-15', 'ARM'),
     (8497232, 'Tablet', 'PineTouch', 249, 'Gris', '128GB', '2022-08-20', 'ARM'),
@@ -80,7 +73,6 @@ INSERT INTO Productos (Numero_serie, Tipo, Modelo, Precio, Color, Almacenamiento
     (5929290, 'Auriculares', 'Pods', 149, 'Blanco', NULL, '2023-03-05', NULL),
     (2365123, 'Accesorio', 'Teclados', 49, 'Negro', NULL, '2023-04-20', NULL);
 
---STOCK--
 INSERT INTO Stock (COD_ST, CANTIDAD_ST, Num_serie_prod) VALUES
     (1, 10, 8319131),
     (2, 8, 8497232),
@@ -89,7 +81,6 @@ INSERT INTO Stock (COD_ST, CANTIDAD_ST, Num_serie_prod) VALUES
     (5, 6, 5929290),
     (6, 9, 2365123);
 
---PRESUPUESTOS--
 INSERT INTO presupuestos (nro_cli_comp, COD_ST_comp, ID_pago_comp, monto, fecha, cantidad) VALUES
     (1, 1, 1, 199, '2023-11-07', 1),
     (2, 2, 2, 249, '2023-11-07', 2),

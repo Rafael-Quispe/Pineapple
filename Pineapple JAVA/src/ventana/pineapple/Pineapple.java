@@ -4,7 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.HashMap;
-import Conexion.Conexion;
 
 public class Pineapple {
     public static void main(String[] args) {
@@ -16,12 +15,11 @@ public class Pineapple {
         ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         ventana.setLocationRelativeTo(null);
         
-        // Crear el panel de fondo con la imagen de fondo
         JPanel panelFondo = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                ImageIcon imagenFondo = new ImageIcon("C:\\Users\\gabi\\Documents\\NetBeansProjects\\Pineapple JAVA\\src\\main\\java\\ventana\\pineapple\\images\\pineapple_web.png");
+                ImageIcon imagenFondo = new ImageIcon("C:\\Users\\Alumno\\Documents\\NetBeansProjects\\Pineapple JAVA\\src\\main\\java\\ventana\\pineapple\\images\\pineapple_web.png");
                 g.drawImage(imagenFondo.getImage(), 0, 0, getWidth(), getHeight(), this);
             }
         };

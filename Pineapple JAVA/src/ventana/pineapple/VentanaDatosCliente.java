@@ -31,15 +31,14 @@ public class VentanaDatosCliente {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                ImageIcon imagenFondo = new ImageIcon("C:\\Users\\gabi\\Documents\\NetBeansProjects\\Pineapple JAVA\\src\\main\\java\\ventana\\pineapple\\images\\pineapple_web_blurred.png");
+                ImageIcon imagenFondo = new ImageIcon("C:\\Users\\Alumno\\Documents\\NetBeansProjects\\Pineapple JAVA\\src\\main\\java\\ventana\\pineapple\\images\\pineapple_web_blurred.png");
                 g.drawImage(imagenFondo.getImage(), 0, 0, getWidth(), getHeight(), this);
             }
         };
 
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(3, 3, 3, 3); // Agregar márgenes entre componentes
+        gbc.insets = new Insets(3, 3, 3, 3);
 
-        // Agregar el formulario para ingresar datos de cliente
         panelFondo.setLayout(new java.awt.GridLayout(9, 2, 5, 5));
         
         JLabel dniLabel = new JLabel("DNI:");
@@ -65,7 +64,6 @@ public class VentanaDatosCliente {
         guardarButton.setBackground(new Color(40, 100, 255));
         guardarButton.setForeground(Color.WHITE);
         guardarButton.addActionListener((ActionEvent e) -> {
-            // Obtener los datos del formulario
             int dni = Integer.parseInt(dniTextField.getText());
             String nombre = nombreTextField.getText();
             String apellido = apellidoTextField.getText();
@@ -76,35 +74,29 @@ public class VentanaDatosCliente {
 
             if (clienteRegistrado(dni)) {
                 JOptionPane.showMessageDialog(null, "Cliente ya registrado. Puede realizar otro pedido.", "Aviso", JOptionPane.INFORMATION_MESSAGE);
-                
-                ventana.dispose();
-
-                VentanaPedido.mostrarVentana();
-                //return;
-            }
-            
-            // Conectar a la base de datos y guardar los datos en la tabla Cliente
-            try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/pineapple", "root", "")) {
-                String query = "INSERT INTO Cliente (DNI, Nombre, Apellido, Mail, Direccion, C_Postal, Telefono) VALUES (?, ?, ?, ?, ?, ?, ?)";
-                try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                    preparedStatement.setInt(1, dni);
-                    preparedStatement.setString(2, nombre);
-                    preparedStatement.setString(3, apellido);
-                    preparedStatement.setString(4, mail);
-                    preparedStatement.setString(5, direccion);
-                    preparedStatement.setInt(6, cpostal);
-                    preparedStatement.setInt(7, telefono);
-                    preparedStatement.executeUpdate();
-                    JOptionPane.showMessageDialog(null, "Cliente guardado en la base de datos.");
-                    
-                    ventana.dispose();
-
-                    VentanaPedido.mostrarVentana();
+            } else {
+                try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/pineapple", "root", "")) {
+                    String query = "INSERT INTO Cliente (DNI, Nombre, Apellido, Mail, Direccion, C_Postal, Telefono) VALUES (?, ?, ?, ?, ?, ?, ?)";
+                    try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                        preparedStatement.setInt(1, dni);
+                        preparedStatement.setString(2, nombre);
+                        preparedStatement.setString(3, apellido);
+                        preparedStatement.setString(4, mail);
+                        preparedStatement.setString(5, direccion);
+                        preparedStatement.setInt(6, cpostal);
+                        preparedStatement.setInt(7, telefono);
+                        preparedStatement.executeUpdate();
+                        JOptionPane.showMessageDialog(null, "Cliente guardado en la base de datos.");
+                    }
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(null, "Error al guardar el cliente en la base de datos.");
                 }
-            } catch (SQLException ex) {
-                JOptionPane.showMessageDialog(null, "Error al guardar el cliente en la base de datos.");
             }
+
+            ventana.dispose();
+            VentanaPedido.mostrarVentana();
         });
+
         panelFondo.add(guardarButton, gbc);
 
         dniLabel.setForeground(Color.WHITE);
@@ -158,7 +150,7 @@ public class VentanaDatosCliente {
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setInt(1, dni);
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                    return resultSet.next(); // Devuelve true si hay al menos un resultado
+                    return resultSet.next();
                 }
             }
         } catch (SQLException ex) {
