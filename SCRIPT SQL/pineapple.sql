@@ -4,13 +4,13 @@ USE pineapple;
 
 CREATE TABLE Clientes(
     ID INT PRIMARY KEY AUTO_INCREMENT,
-    DNI INT NOT NULL unique,
+    DNI INT NOT NULL,
     Nombre VARCHAR(50),
     Apellido VARCHAR(50),
     Mail VARCHAR(50),
     Direccion VARCHAR(50),
     C_Postal INT,
-    Telefono INT unique
+    Telefono INT
 );
 
 CREATE TABLE Medios_de_pago(
@@ -44,12 +44,12 @@ CREATE TABLE Presupuestos(
     fecha date,
     cantidad INT,
     PRIMARY KEY (nro_cli_comp, COD_ST_comp),
-    FOREIGN KEY (nro_cli_comp) REFERENCES Cliente(ID),
+    FOREIGN KEY (nro_cli_comp) REFERENCES Clientes(ID),
     FOREIGN KEY (COD_ST_comp) REFERENCES Stock(COD_ST),
     FOREIGN KEY (ID_pago_comp) REFERENCES Medios_de_pago(ID_PAGO)
 );
 
-INSERT INTO Cliente (DNI, Nombre, Apellido, Mail, Direccion, C_Postal, Telefono) VALUES 
+INSERT INTO Clientes (DNI, Nombre, Apellido, Mail, Direccion, C_Postal, Telefono) VALUES 
     (12345678, 'Juan', 'Perez', 'juan.perez@email.com', 'Calle Principal 123', 12345, 555555555),
     (23456789, 'Maria', 'Lopez', 'maria.lopez@email.com', 'Avenida Secundaria 456', 54321, 666666666),
     (34567890, 'Carlos', 'Gomez', 'carlos.gomez@email.com', 'Calle Principal 789', 67890, 777777777),
@@ -81,7 +81,7 @@ INSERT INTO Stock (COD_ST, CANTIDAD_ST, Num_serie_prod) VALUES
     (5, 6, 5929290),
     (6, 9, 2365123);
 
-INSERT INTO presupuestos (nro_cli_comp, COD_ST_comp, ID_pago_comp, monto, fecha, cantidad) VALUES
+INSERT INTO Presupuestos (nro_cli_comp, COD_ST_comp, ID_pago_comp, monto, fecha, cantidad) VALUES
     (1, 1, 1, 199, '2023-11-07', 1),
     (2, 2, 2, 249, '2023-11-07', 2),
     (3, 3, 3, 899, '2023-11-07', 3),

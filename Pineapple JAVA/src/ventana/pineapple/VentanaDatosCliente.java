@@ -76,7 +76,7 @@ public class VentanaDatosCliente {
                 JOptionPane.showMessageDialog(null, "Cliente ya registrado. Puede realizar otro pedido.", "Aviso", JOptionPane.INFORMATION_MESSAGE);
             } else {
                 try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/pineapple", "root", "")) {
-                    String query = "INSERT INTO Cliente (DNI, Nombre, Apellido, Mail, Direccion, C_Postal, Telefono) VALUES (?, ?, ?, ?, ?, ?, ?)";
+                    String query = "INSERT INTO Clientes (DNI, Nombre, Apellido, Mail, Direccion, C_Postal, Telefono) VALUES (?, ?, ?, ?, ?, ?, ?)";
                     try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                         preparedStatement.setInt(1, dni);
                         preparedStatement.setString(2, nombre);
@@ -107,7 +107,6 @@ public class VentanaDatosCliente {
         cpostalLabel.setForeground(Color.WHITE);
         telefonoLabel.setForeground(Color.WHITE);
 
-        // Agregar componentes al panel
         panelFondo.add(dniLabel);
         panelFondo.add(dniTextField);
         panelFondo.add(nombreLabel);
@@ -146,7 +145,7 @@ public class VentanaDatosCliente {
 
     private static boolean clienteRegistrado(int dni) {
         try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/pineapple", "root", "")) {
-            String query = "SELECT * FROM Cliente WHERE DNI = ?";
+            String query = "SELECT * FROM Clientes WHERE DNI = ?";
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setInt(1, dni);
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -154,9 +153,11 @@ public class VentanaDatosCliente {
                 }
             }
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Error al verificar si el cliente está registrado.", "Error", JOptionPane.ERROR_MESSAGE);
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error al verificar si el cliente está registrado: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             return false;
         }
+
     }
     
     public static void main(String[] args) {

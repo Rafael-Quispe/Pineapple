@@ -11,16 +11,18 @@ public class VentanaProducto {
         ventana.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         ventana.setLocationRelativeTo(null);
 
+        String imagePath = "C:\\Users\\Alumno\\Documents\\NetBeansProjects\\Pineapple JAVA\\src\\main\\java\\ventana\\pineapple\\images\\";
+
         JPanel panelFondo = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 ImageIcon imagenFondo = null;
                 switch (producto) {
-                    case "Pine Phone" -> imagenFondo = new ImageIcon("C:\\Users\\Alumno\\Documents\\NetBeansProjects\\Pineapple JAVA\\src\\main\\java\\ventana\\pineapple\\images\\PinePhone.png");
-                    case "Pine Touch" -> imagenFondo = new ImageIcon("C:\\Users\\Alumno\\Documents\\NetBeansProjects\\Pineapple JAVA\\src\\main\\java\\ventana\\pineapple\\images\\PineTouch.png");
-                    case "Pine Mac" -> imagenFondo = new ImageIcon("C:\\Users\\Alumno\\Documents\\NetBeansProjects\\Pineapple JAVA\\src\\main\\java\\ventana\\pineapple\\images\\PineMac.png");
-                    default -> imagenFondo = new ImageIcon("C:\\Users\\gabi\\Alumno\\NetBeansProjects\\Pineapple JAVA\\src\\main\\java\\ventana\\pineapple\\images\\pineapple_web_blurred.png");
+                    case "Pine Phone" -> imagenFondo = new ImageIcon(imagePath + "PinePhone.png");
+                    case "Pine Touch" -> imagenFondo = new ImageIcon(imagePath + "PineTouch.png");
+                    case "Pine Mac" -> imagenFondo = new ImageIcon(imagePath + "PineMac.png");
+                    default -> imagenFondo = new ImageIcon(imagePath + "pineapple_web_blurred.png");
                 }
                 g.drawImage(imagenFondo.getImage(), 0, 0, getWidth(), getHeight(), this);
             }
@@ -31,11 +33,6 @@ public class VentanaProducto {
         JPanel panelPrincipal = new JPanel();
         panelPrincipal.setOpaque(false);
         panelPrincipal.setLayout(new BoxLayout(panelPrincipal, BoxLayout.Y_AXIS));
-        
-        JButton botonCarrito = new JButton("COMPRAR AHORA");
-        botonCarrito.addActionListener((ActionEvent e) -> {
-            VentanaDatosCliente.mostrarVentana();
-        });
 
         JLabel etiquetaProducto = new JLabel(producto);
         etiquetaProducto.setFont(new Font("Arial", Font.BOLD, 36));
@@ -64,16 +61,59 @@ public class VentanaProducto {
             etiquetaDescripcion.setForeground(Color.WHITE);
         }
 
-        /*JButton botonComprar = new JButton("Conocé los modelos");
-        botonComprar.setAlignmentX(Component.CENTER_ALIGNMENT);
-        botonComprar.setOpaque(false); // Hacer el botón transparente*/
-
         panelPrincipal.add(etiquetaDescripcion);
-        panelPrincipal.add(botonCarrito);
 
+        panelPrincipal.add(Box.createVerticalGlue());
+
+        JPanel panelBoton = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        panelBoton.setOpaque(false);
+
+        JButton botonCarrito = new JButton("COMPRAR AHORA");
+        estiloBoton(botonCarrito, Color.BLUE, Color.WHITE);
+        botonCarrito.addActionListener((ActionEvent e) -> {
+            VentanaDatosCliente.mostrarVentana();
+        });
+
+        JButton botonDescripcion = new JButton("Mostrar Descripción");
+        estiloBoton(botonDescripcion, Color.GRAY, Color.WHITE);
+        botonDescripcion.addActionListener((ActionEvent e) -> {
+            String descripcionProducto = obtenerDescripcionProducto(producto);
+            JOptionPane.showMessageDialog(ventana, descripcionProducto, "Descripción", JOptionPane.INFORMATION_MESSAGE);
+        });
+
+        panelBoton.add(botonCarrito);
+        panelBoton.add(botonDescripcion);
+
+        panelFondo.add(panelBoton, BorderLayout.SOUTH);
         panelFondo.add(panelPrincipal, BorderLayout.NORTH);
 
         ventana.add(panelFondo);
         ventana.setVisible(true);
+    }
+
+    private static void estiloBoton(AbstractButton boton, Color fondo, Color texto) {
+        boton.setFont(new Font("Arial", Font.PLAIN, 16));
+        boton.setPreferredSize(new Dimension(200, 40));
+        boton.setBackground(fondo);
+        boton.setForeground(texto);
+        boton.setFocusPainted(false);
+        boton.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+    }
+
+    private static String obtenerDescripcionProducto(String producto) {
+        switch (producto) {
+            case "Pine Phone" -> {
+                return "¡Descubre la libertad en tus manos con PinePhone! Este revolucionario smartphone ofrece un control total sobre tu dispositivo, con un sistema operativo de código abierto que te permite personalizar cada detalle.";
+            }
+            case "Pine Touch" -> {
+                return "Sumérgete en la innovación táctil con PineTouch, la solución perfecta para aquellos que buscan la combinación ideal entre estilo y rendimiento. Con su pantalla táctil intuitiva y capacidad de respuesta incomparable, PineTouch redefine la forma en que interactúas con la tecnología.";
+            }
+            case "Pine Mac" -> {
+                return "Transforma tu espacio con PineMac, la joya de la corona en tecnología y diseño. Potencia tu productividad con un rendimiento excepcional y un diseño minimalista que encaja perfectamente en cualquier entorno.";
+            }
+            default -> {
+                return "Descripción no disponible";
+            }
+        }
     }
 }

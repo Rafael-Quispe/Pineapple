@@ -205,7 +205,7 @@ public class VentanaPedido extends JFrame {
             java.util.Date utilDate = new java.util.Date();
             java.sql.Date fechaActual = new java.sql.Date(utilDate.getTime());
 
-            String query = "INSERT INTO presupuestos (nro_cli_comp, COD_ST_comp, ID_pago_comp, monto, fecha, cantidad) VALUES (?, ?, ?, ?, ?, ?)";
+            String query = "INSERT INTO Presupuestos (nro_cli_comp, COD_ST_comp, ID_pago_comp, monto, fecha, cantidad) VALUES (?, ?, ?, ?, ?, ?)";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setInt(1, numeroCliente);
                 statement.setInt(2, codigoStock);
@@ -226,7 +226,7 @@ public class VentanaPedido extends JFrame {
     private int obtenerNumeroCliente(Connection connection) {
         int numeroCliente = 0;
         try {
-            String query = "SELECT ID FROM Cliente WHERE DNI = ?";
+            String query = "SELECT ID FROM Clientes WHERE DNI = ?";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setInt(1, 123456789);
                 ResultSet resultSet = statement.executeQuery();
