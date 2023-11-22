@@ -54,13 +54,13 @@ public class VentanaPresupuesto extends JFrame {
 
         JButton realizarPedidoButton = new JButton("Realizar pedido");
         realizarPedidoButton.addActionListener((ActionEvent e) -> {
-            realizarPedido();
+            JOptionPane.showMessageDialog(this, "Pedido realizado con éxito");
+            dispose();
         });
 
         JButton rechazarPedidoButton = new JButton("Rechazar presupuesto");
         rechazarPedidoButton.addActionListener((ActionEvent e) -> {
-            JOptionPane.showMessageDialog(VentanaPresupuesto.this, "Pedido cancelado con éxito");
-            dispose();
+            rechazarPedido();
         });
 
         panel.add(realizarPedidoButton);
@@ -71,41 +71,26 @@ public class VentanaPresupuesto extends JFrame {
         setVisible(true);
     }
 
-    private void realizarPedido() {
-        try {
-            // Configurar la conexión
-            String url = "jdbc:mysql://localhost:3306/Pineapple";
-            String usuario = "root";
-            String contraseña = "";
+    private void rechazarPedido() {
+        String sql = "DELETE FROM Presupuestos WHERE cod_presupuesto = (SELECT MAX(cod_presupuesto) FROM Presupuestos)";
+        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Pineapple", "root", "");
+            PreparedStatement statement = connection.prepareStatement(sql)) {
 
-            try (Connection connection = DriverManager.getConnection(url, usuario, contraseña)) {
-                int nroCliComp = obtenerNumeroCliente();
-                int codStComp = obtenerCodigoStock();
-                int idPagoComp = obtenerIdMedioPago();
+            int filasAfectadas = statement.executeUpdate();
 
-                double costoTotal = calcularMontoTotal();
-                int cantidadProductos = productos.size();
-
-                // Configurar la consulta SQL
-                String insertSql = "INSERT INTO Presupuestos (nro_cli_comp, COD_ST_comp, ID_pago_comp, monto, fecha, cantidad) VALUES (?, ?, ?, ?, CURDATE(), ?)";
-                try (PreparedStatement pstmt = connection.prepareStatement(insertSql)) {
-                    pstmt.setInt(1, nroCliComp);
-                    pstmt.setInt(2, codStComp);
-                    pstmt.setInt(3, idPagoComp);
-                    pstmt.setDouble(4, costoTotal);
-                    pstmt.setInt(5, cantidadProductos);
-
-                    pstmt.executeUpdate();
-
-                    JOptionPane.showMessageDialog(this, "Pedido realizado con éxito");
-                    dispose();
-                }
+            if (filasAfectadas > 0) {
+                System.out.println("Pedido rechazado correctamente.");
+            } else {
+                System.out.println("No se encontraron pedidos para rechazar.");
             }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Error al realizar el pedido");
+            JOptionPane.showMessageDialog(this, "Pedido rechazado con éxito");
+            dispose();
         }
+        catch (SQLException e) {
+                e.printStackTrace();
+            }
     }
+
 
     private int obtenerNumeroCliente() {
             try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Pineapple", "root", "")) {

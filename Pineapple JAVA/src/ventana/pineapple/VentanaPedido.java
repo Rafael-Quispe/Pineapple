@@ -21,11 +21,7 @@ public class VentanaPedido extends JFrame {
     private final List<String> productosSeleccionados = new ArrayList<>();
     private int idPago;
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(VentanaPedido::mostrarVentana);
-    }
-
-    public static void mostrarVentana() {
+    public static void mostrarVentana(int dni) {
         VentanaPedido ventanaPedido = new VentanaPedido();
 
         JFrame ventana = new JFrame("Pedido");
@@ -89,7 +85,7 @@ public class VentanaPedido extends JFrame {
             try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/pineapple", "root",
                     "")) {
                 for (String producto : ventanaPedido.productosSeleccionados) {
-                    ventanaPedido.insertarPedido(connection, producto, cantidad);
+                    ventanaPedido.insertarPedido(connection, producto, cantidad, dni);
                 }
             } catch (SQLException ex) {
                 ex.printStackTrace();
@@ -193,9 +189,9 @@ public class VentanaPedido extends JFrame {
         return idPago;
     }
 
-    private void insertarPedido(Connection connection, String producto, JTextField cantidad1) {
+    private void insertarPedido(Connection connection, String producto, JTextField cantidad1, int dni) {
         try {
-            int numeroCliente = obtenerNumeroCliente(connection);
+            int numeroCliente = obtenerNumeroCliente(connection, dni);
             int codigoStock = obtenerCodigoStock(connection);
 
             double precioUnitario = precios.get(producto);
@@ -207,6 +203,13 @@ public class VentanaPedido extends JFrame {
 
             String query = "INSERT INTO Presupuestos (nro_cli_comp, COD_ST_comp, ID_pago_comp, monto, fecha, cantidad) VALUES (?, ?, ?, ?, ?, ?)";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
+                System.out.println("Número de Cliente: " + numeroCliente);
+                System.out.println("Código de Stock: " + codigoStock);
+                System.out.println("ID de Pago: " + idPago);
+                System.out.println("Monto: " + monto);
+                System.out.println("Fecha Actual: " + fechaActual);
+                System.out.println("Cantidad: " + cantidad);
+                
                 statement.setInt(1, numeroCliente);
                 statement.setInt(2, codigoStock);
                 statement.setInt(3, idPago);
@@ -223,12 +226,12 @@ public class VentanaPedido extends JFrame {
         }
     }
 
-    private int obtenerNumeroCliente(Connection connection) {
+    private int obtenerNumeroCliente(Connection connection, int dni) {
         int numeroCliente = 0;
         try {
             String query = "SELECT ID FROM Clientes WHERE DNI = ?";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
-                statement.setInt(1, 123456789);
+                statement.setInt(1, dni);
                 ResultSet resultSet = statement.executeQuery();
                 if (resultSet.next()) {
                     numeroCliente = resultSet.getInt("ID");

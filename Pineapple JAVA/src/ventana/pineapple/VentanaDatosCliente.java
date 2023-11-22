@@ -94,7 +94,7 @@ public class VentanaDatosCliente {
             }
 
             ventana.dispose();
-            VentanaPedido.mostrarVentana();
+            VentanaPedido.mostrarVentana(dni);
         });
 
         panelFondo.add(guardarButton, gbc);
