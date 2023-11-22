@@ -37,13 +37,13 @@ CREATE TABLE Stock(
 );
 
 CREATE TABLE Presupuestos(
+    cod_presupuesto int PRIMARY KEY AUTO_INCREMENT,
     nro_cli_comp INT,
     COD_ST_comp INT,
     ID_pago_comp INT,
     monto INT,
     fecha date,
     cantidad INT,
-    PRIMARY KEY (nro_cli_comp, COD_ST_comp),
     FOREIGN KEY (nro_cli_comp) REFERENCES Clientes(ID),
     FOREIGN KEY (COD_ST_comp) REFERENCES Stock(COD_ST),
     FOREIGN KEY (ID_pago_comp) REFERENCES Medios_de_pago(ID_PAGO)
